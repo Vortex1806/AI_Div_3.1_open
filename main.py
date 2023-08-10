@@ -46,6 +46,7 @@ stocks = {
     "Tesla - 'TSLA'": {"name": "TESLA INC", "symbol": "TSLA", "cik": "0001318605"},
     "Home Depot - 'HDI.DE'": {"name": "The Home Depot", "symbol": "HDI.DE", "cik": "0000354950"},
     "MC Donalds - 'MCD'": {"name": "The Home Depot", "symbol": "MCD", "cik": "0000063908"},
+    "VISA - 'V'": {"name": "Visa Inc.", "symbol": "V", "cik": "0001403161"},
 
 }
 def get_recommendation(stock_cik, question):
