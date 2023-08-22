@@ -74,9 +74,12 @@ def get_recommendation(stock_cik, question):
     query1 = question[0]
     query2 = question[1]
     query3 = question[2]
-    answerarray[0]=qa.run(query1).translate(str.maketrans("", "", "_*"))
-    answerarray[1]=qa.run(query2).translate(str.maketrans("", "", "_*"))
-    answerarray[2]=qa.run(query3).translate(str.maketrans("", "", "_*"))
+    ans1= qa.run(query1)
+    ans2=qa.run(query2)
+    ans3=qa.run(query3)
+    answerarray[0]=ans1.translate(str.maketrans("", "", "_*"))
+    answerarray[1]=ans2.translate(str.maketrans("", "", "_*"))
+    answerarray[2]=ans3.translate(str.maketrans("", "", "_*"))
 
     return answerarray
 
@@ -236,5 +239,3 @@ answerarray = get_recommendation(stocks[selected_stock], questionsarray)
 col2.write(answerarray[0])
 col2.write(answerarray[1])
 col2.write(answerarray[2])
-
-
