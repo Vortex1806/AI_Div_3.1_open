@@ -24,6 +24,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter, PythonCodeTe
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
 load_dotenv()
+answerarray = ["x","y","z"]
 
 def format_large_number(num):
     if abs(num) >= 1_000_000_000_000:
