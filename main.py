@@ -4,7 +4,7 @@
 import streamlit as st
 import pandas as pd
 from PIL import Image
-
+import openai
 import yfinance as yf
 from yahooquery import Ticker
 from datetime import datetime, timedelta
@@ -20,7 +20,12 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.llms import OpenAI
 from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter, PythonCodeTextSplitter
+from langchain import PromptTemplate
 
+prompt_template = PromptTemplate.from_template(
+    "Tell me a {adjective} joke about {content}."
+)
+prompt_template.format(adjective="funny", content="chickens")
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
 load_dotenv()
@@ -80,6 +85,7 @@ def get_recommendation(stock_cik, question):
     answerarray[0]=ans1.translate(str.maketrans("", "", "_*"))
     answerarray[1]=ans2.translate(str.maketrans("", "", "_*"))
     answerarray[2]=ans3.translate(str.maketrans("", "", "_*"))
+
 
     return answerarray
 
@@ -235,7 +241,19 @@ questionsarray=["What are this firm's key products and services?",
 # Get AI-generated answers using get_recommendation function
 answerarray = get_recommendation(stocks[selected_stock], questionsarray)
 
-# Display AI-generated answers in the second column
+prompt_template = PromptTemplate.from_template(
+    "You are a stock market analyzer, based on the above {content} about stock {stock}.Analyze the details and give a detailed summary about the stock.Write it down in moderator style from bloomberg"
+)
+prompt_template.format(content=additional_data,stock=selected_stock);
+
+def load_llm():
+    llm=OpenAI(temperature=0.5,openai_api_key=openai_api_key)
+    return llm
+
+analyzellm=load_llm()
+
+summary_analyzed=analyzellm(prompt_template)
 col2.write(answerarray[0])
 col2.write(answerarray[1])
 col2.write(answerarray[2])
+col2.write̐(summary_analyzed)
