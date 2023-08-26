@@ -22,10 +22,6 @@ from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter, PythonCodeTextSplitter
 from langchain import PromptTemplate
 
-prompt_template = PromptTemplate.from_template(
-    "Tell me a {adjective} joke about {content}."
-)
-prompt_template.format(adjective="funny", content="chickens")
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
 load_dotenv()
@@ -241,19 +237,27 @@ questionsarray=["What are this firm's key products and services?",
 # Get AI-generated answers using get_recommendation function
 answerarray = get_recommendation(stocks[selected_stock], questionsarray)
 
-prompt_template = PromptTemplate.from_template(
-    "You are a stock market analyzer, based on the above {content} about stock {stock}.Analyze the details and give a detailed summary about the stock.Write it down in moderator style from bloomberg"
-)
-prompt_template.format(content=additional_data,stock=selected_stock);
 
-def load_llm():
-    llm=OpenAI(temperature=0.5,openai_api_key=openai_api_key)
-    return llm
-
-analyzellm=load_llm()
-
-summary_analyzed=analyzellm(prompt_template)
+prompt = f"""
+    Please summarise the below data with some added insights for the stock {stocks[selected_stock]["symbol"]} in comparison to the market eveythint in 5 points:
+    "P/E Ratio": {pe_ratio},
+    "52 Week Low": {price_to_sales},
+    "52 Week High": {target_price},
+    "Market Capitalisation": {market_cap},
+    "EBITDA": {ebitda},
+    "Price Target": {tar},
+    "Recommendation": {rec},
+    "Free Cash Flow": {fcf},
+    "Cash & Cash Equivalents": {cash_equivalents},
+    "Total Debt": {total_debt},
+    "Equity Value": {equity_value},
+    "Shares Outstanding": {shares_outstanding},
+    "DCF Price Per Share": {dcf_price_per_share}
+"""
+llm = OpenAI(temperature=0.9,openai_api_key = openai_api_key)
+ans = llm(prompt)
 col2.write(answerarray[0])
 col2.write(answerarray[1])
 col2.write(answerarray[2])
-col2.write̐(summary_analyzed)
+col2.title("Our Insights")
+col2.write(ans)
