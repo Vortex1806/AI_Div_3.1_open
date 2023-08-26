@@ -239,7 +239,7 @@ answerarray = get_recommendation(stocks[selected_stock], questionsarray)
 
 
 prompt = f"""
-    Please summarise the below data with some added insights for the stock {stocks[selected_stock]["symbol"]} in comparison to the market eveythint in 5 points:
+    Give an analysis for the stock {stocks[selected_stock]["symbol"]} based on the below parameters make it into a summary for me to display on my screen to provide a proper analysis on the stock, provide things like if the stock is volatile, is pe ratio better than the curent market ratio:
     "P/E Ratio": {pe_ratio},
     "52 Week Low": {price_to_sales},
     "52 Week High": {target_price},
